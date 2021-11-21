@@ -43,6 +43,18 @@ module.exports.lexicalAnalyse = function (source) {
         tokens.push({ type: 'Plus' })
         readPosition += 1
         break
+      case '-':
+        tokens.push({ type: 'minus'})
+        readPosition += 1
+        break
+      case '*':
+        tokens.push({ type: 'multiply'})
+        readPosition += 1
+        break
+      case '/':
+        tokens.push({ type: 'divide'})
+        readPosition += 1
+        break
       case '(':
         tokens.push({ type: 'LParen' })
         readPosition += 1
