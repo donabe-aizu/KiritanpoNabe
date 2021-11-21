@@ -120,7 +120,7 @@ function parseFunctionCallingExpression(tokens) {
 // 引き算は勉強会中で機能追加をする
 function parseAddSubExpression(tokens) {
   let { expression: left, parsedTokensCount: readPosition } = parseFunctionCallingExpression(tokens)
-  while (tokens[readPosition]?.type === 'Plus') {
+  while (tokens[readPosition]?.type === 'Plus' || tokens[readPosition]?.type === 'Minus') {
     const {
       expression: right,
       parsedTokensCount: rightTokensCount,
@@ -128,18 +128,8 @@ function parseAddSubExpression(tokens) {
     if (right === null) {
       return { expression: null }
     }
-    left = { type: 'Add', left, right }
-    readPosition += rightTokensCount + 1
-  }
-  while (tokens[readPosition]?.type === 'Minus') {
-    const {
-      expression: right,
-      parsedTokensCount: rightTokensCount,
-    } = parseFunctionCallingExpression(tokens.slice(readPosition + 1))
-    if (right === null) {
-      return { expression: null }
-    }
-    left = { type: 'Sub', left, right }
+    if(tokens[readPosition]?.type === 'Plus')left = { type: 'Add', left, right }
+    else if(tokens[readPosition]?.type === 'Minus')left = { type: 'Sub', left, right }
     readPosition += rightTokensCount + 1
   }
   return { expression: left, parsedTokensCount: readPosition }
