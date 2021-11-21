@@ -50,15 +50,15 @@ module.exports.lexicalAnalyse = function (source) {
         readPosition += 1
         break
       case '-':
-        tokens.push({ type: 'minus' })
+        tokens.push({ type: 'Minus' })
         readPosition += 1
         break
       case '*':
-        tokens.push({ type: 'multiply' })
+        tokens.push({ type: 'Multiply' })
         readPosition += 1
         break
       case '/':
-        tokens.push({ type: 'divide' })
+        tokens.push({ type: 'Divide' })
         readPosition += 1
         break
       case '(':

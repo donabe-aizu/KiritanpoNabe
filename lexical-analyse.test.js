@@ -22,6 +22,16 @@ describe('字句解析', () => {
       { type: 'Plus' },
       { type: 'Int', value: 2 }])
   })
+  test('1-2*3/4', () => {
+    expect(lexicalAnalyse('1-2*3/4')).toStrictEqual([
+      { type: 'Int', value: 1 },
+      { type: 'Minus' },
+      { type: 'Int', value: 2 },
+      { type: 'Multiply' },
+      { type: 'Int', value: 3 },
+      { type: 'Divide' },
+      { type: 'Int', value: 4 }])
+  })
   test('空白は無視する', () => {
     expect(lexicalAnalyse('\t 1 ')).toStrictEqual([{ type: 'Int', value: 1 }])
     expect(lexicalAnalyse('     ')).toStrictEqual([])
