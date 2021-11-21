@@ -5,8 +5,8 @@ function isDigit(char) {
 
 function isIdentChar(char) {
   const charCode = char.charCodeAt(0)
-  return 'a'.charCodeAt(0) <= charCode && charCode <= 'z'.charCodeAt(0) 
-    || 'A'.charCodeAt(0) <= charCode && charCode <= 'Z'.charCodeAt(0) 
+  return ('a'.charCodeAt(0) <= charCode && charCode <= 'z'.charCodeAt(0))
+    || ('A'.charCodeAt(0) <= charCode && charCode <= 'Z'.charCodeAt(0))
     || charCode === '_'.charCodeAt(0)
 }
 
@@ -38,12 +38,11 @@ module.exports.lexicalAnalyse = function (source) {
   while (readPosition < source.length) {
     switch (source[readPosition]) {
       case '=':
-        if(source[readPosition+1]=='='){
+        if (source[readPosition + 1] === '=') {
           tokens.push({ type: '==' })
           readPosition += 2
           break
-        } else
-        tokens.push({ type: 'Equal' })
+        } else tokens.push({ type: 'Equal' })
         readPosition += 1
         break
       case '+':
@@ -51,15 +50,15 @@ module.exports.lexicalAnalyse = function (source) {
         readPosition += 1
         break
       case '-':
-        tokens.push({ type: 'minus'})
+        tokens.push({ type: 'minus' })
         readPosition += 1
         break
       case '*':
-        tokens.push({ type: 'multiply'})
+        tokens.push({ type: 'multiply' })
         readPosition += 1
         break
       case '/':
-        tokens.push({ type: 'divide'})
+        tokens.push({ type: 'divide' })
         readPosition += 1
         break
       case '(':
