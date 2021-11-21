@@ -128,8 +128,8 @@ function parseAddSubExpression(tokens) {
     if (right === null) {
       return { expression: null }
     }
-    if(tokens[readPosition]?.type === 'Plus')left = { type: 'Add', left, right }
-    else if(tokens[readPosition]?.type === 'Minus')left = { type: 'Sub', left, right }
+    if (tokens[readPosition]?.type === 'Plus')left = { type: 'Add', left, right }
+    else if (tokens[readPosition]?.type === 'Minus')left = { type: 'Sub', left, right }
     readPosition += rightTokensCount + 1
   }
   return { expression: left, parsedTokensCount: readPosition }
