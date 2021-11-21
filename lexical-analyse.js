@@ -5,7 +5,9 @@ function isDigit(char) {
 
 function isIdentChar(char) {
   const charCode = char.charCodeAt(0)
-  return 'a'.charCodeAt(0) <= charCode && charCode <= 'z'.charCodeAt(0)
+  return 'a'.charCodeAt(0) <= charCode && charCode <= 'z'.charCodeAt(0) 
+    || 'A'.charCodeAt(0) <= charCode && charCode <= 'Z'.charCodeAt(0) 
+    || charCode === '_'.charCodeAt(0)
 }
 
 function countDigits(source) {
@@ -36,6 +38,11 @@ module.exports.lexicalAnalyse = function (source) {
   while (readPosition < source.length) {
     switch (source[readPosition]) {
       case '=':
+        if(source[readPosition+1]=='='){
+          tokens.push({ type: '==' })
+          readPosition += 2
+          break
+        } else
         tokens.push({ type: 'Equal' })
         readPosition += 1
         break
