@@ -58,7 +58,17 @@ module.exports.lexicalAnalyse = function (source) {
         readPosition += 1
         break
       case '/':
-        tokens.push({ type: 'Divide' })
+        if (source[readPosition + 1] === '*'){
+          readPosition += 2
+          while (source[readPosition] !== '*' && source[readPosition + 1] !== '/'){
+            readPosition += 1
+            if(source[readPosition] === undefined){
+              break
+            }
+          }
+          readPosition += 2
+          break
+        } else tokens.push({ type: 'Slash' })
         readPosition += 1
         break
       case '(':
@@ -85,6 +95,25 @@ module.exports.lexicalAnalyse = function (source) {
         tokens.push({ type: 'Semicolon' })
         readPosition += 1
         break
+      case '"': {
+        readPosition += 1
+        let str = ''
+        while(source[readPosition] !== '"'){
+          if(source[readPosition] === '\\'){
+            str += source[readPosition + 1]
+            readPosition += 2
+          } else {
+            str += source[readPosition]
+            readPosition += 1
+          }
+          if(source[readPosition] === undefined){
+            break
+          }
+        }
+        tokens.push({ type: 'string' , string: str})
+        readPosition += 1
+        break
+      }
       case ' ':
       case '\t':
       case '\n':

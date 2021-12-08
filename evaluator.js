@@ -1,4 +1,4 @@
-const { intValue, nullValue, boolValue } = require('./value')
+const { intValue, stringValue, nullValue, boolValue } = require('./value')
 
 function evaluatorError(ast) {
   return {
@@ -124,6 +124,7 @@ function evaluateSub(ast, environment) {
 function unwrapObject(obj) {
   switch (obj.type) {
     case 'IntValue':
+    case 'StringValue':
     case 'BoolValue':
       return obj.value
     case 'NullValue':
@@ -190,7 +191,7 @@ function evaluateArguments(args, environment) {
   for (const stmt of args) {
     const {
       result: argResult, error: argError, environment: argEnvironment,
-    // eslint-disable-next-line no-use-before-define
+      // eslint-disable-next-line no-use-before-define
     } = evaluate(stmt, argumentsEvaluatedEnvironment)
     if (argError) {
       return {
@@ -320,6 +321,11 @@ function evaluate(ast, environment) {
     case 'IntLiteral':
       return {
         result: intValue(ast.value),
+        environment,
+      }
+    case 'StringLiteral':
+      return {
+        result: stringValue(ast.value),
         environment,
       }
     case 'BoolLiteral':

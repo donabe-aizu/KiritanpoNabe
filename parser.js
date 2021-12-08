@@ -10,6 +10,14 @@ function parseLiteral(tokens) {
         },
         parsedTokensCount: 1,
       }
+    case 'string':
+      return {
+        expression: {
+          type: 'StringLiteral',
+          value: head.string,
+        },
+        parsedTokensCount: 1,
+      }
     case 'Bool':
       return {
         expression: {
@@ -65,7 +73,7 @@ function parseCommaSeparatedExpressions(tokens) {
   const {
     expression: firstExpression,
     parsedTokensCount: firstParsedTokensCount,
-  // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line no-use-before-define
   } = parseExpression(tokens)
   if (firstExpression === null) {
     return {
@@ -128,8 +136,8 @@ function parseAddSubExpression(tokens) {
     if (right === null) {
       return { expression: null }
     }
-    if (tokens[readPosition]?.type === 'Plus')left = { type: 'Add', left, right }
-    else if (tokens[readPosition]?.type === 'Minus')left = { type: 'Sub', left, right }
+    if (tokens[readPosition]?.type === 'Plus') left = { type: 'Add', left, right }
+    else if (tokens[readPosition]?.type === 'Minus') left = { type: 'Sub', left, right }
     readPosition += rightTokensCount + 1
   }
   return { expression: left, parsedTokensCount: readPosition }
@@ -156,7 +164,7 @@ function parseBlock(tokens) {
     const {
       statement: stmt,
       parsedTokensCount,
-    // eslint-disable-next-line no-use-before-define
+      // eslint-disable-next-line no-use-before-define
     } = parseStatement(tokens.slice(readPosition))
     if (stmt === null) {
       return { statements: null }
