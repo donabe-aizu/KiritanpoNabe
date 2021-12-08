@@ -69,7 +69,7 @@ function evaluateAdd(ast, environment) {
   if (leftError) {
     return { error: leftError, environment }
   }
-  if (leftResult.type !== 'IntValue') {
+  if (leftResult.type !== 'IntValue' && leftResult.type !== 'StringValue') {
     return typeError(leftResult.type, environment)
   }
   const {
@@ -81,12 +81,20 @@ function evaluateAdd(ast, environment) {
   if (rightError) {
     return { error: rightError, environment: rightEnvironment }
   }
-  if (rightResult.type !== 'IntValue') {
+  if (rightResult.type !== 'IntValue' && rightResult.type !== 'StringValue') {
     return typeError(rightResult.type, environment)
   }
-  return {
-    result: intValue(leftResult.value + rightResult.value),
-    environment: rightEnvironment,
+  if(leftResult.type === 'IntValue' && rightResult.type === 'IntValue'){
+    return {
+      result: intValue(leftResult.value + rightResult.value),
+      environment: rightEnvironment,
+    }
+  }
+  if(leftResult.type === 'StringValue' && rightResult.type === 'StringValue'){
+    return {
+      result: stringValue(leftResult.value + rightResult.value),
+      environment: rightEnvironment,
+    }
   }
 }
 function evaluateSub(ast, environment) {
