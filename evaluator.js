@@ -96,7 +96,20 @@ function evaluateAdd(ast, environment) {
       environment: rightEnvironment,
     }
   }
+  if(leftResult.type === 'IntValue' && rightResult.type === 'StringValue'){
+    return {
+      result: stringValue(leftResult.value + rightResult.value),
+      environment: rightEnvironment,
+    }
+  }
+  if(leftResult.type === 'StringValue' && rightResult.type === 'IntValue'){
+    return {
+      result: stringValue(leftResult.value + rightResult.value),
+      environment: rightEnvironment,
+    }
+  }
 }
+// 引き算を評価する
 function evaluateSub(ast, environment) {
   const {
     result: leftResult,

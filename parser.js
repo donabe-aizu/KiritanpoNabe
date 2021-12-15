@@ -124,15 +124,33 @@ function parseFunctionCallingExpression(tokens) {
   }
 }
 
-// 足し算と引き算の構文解析
-// 引き算は勉強会中で機能追加をする
-function parseAddSubExpression(tokens) {
+// 掛け算と割り算の構文解析
+function parseMulDivExpression(tokens){
   let { expression: left, parsedTokensCount: readPosition } = parseFunctionCallingExpression(tokens)
-  while (tokens[readPosition]?.type === 'Plus' || tokens[readPosition]?.type === 'Minus') {
+  while (tokens[readPosition]?.type === 'Multiply' || tokens[readPosition]?.type === 'Slash') {
     const {
       expression: right,
       parsedTokensCount: rightTokensCount,
     } = parseFunctionCallingExpression(tokens.slice(readPosition + 1))
+    if (right === null) {
+      return { expression: null }
+    }
+    if (tokens[readPosition]?.type === 'Multiply') left = { type: 'Mul', left, right }
+    else if (tokens[readPosition]?.type === 'Slash') left = { type: 'Div', left, right }
+    readPosition += rightTokensCount + 1
+  }
+  return { expression: left, parsedTokensCount: readPosition }
+}
+
+// 足し算と引き算の構文解析
+// 引き算は勉強会中で機能追加をする
+function parseAddSubExpression(tokens) {
+  let { expression: left, parsedTokensCount: readPosition } = parseMulDivExpression(tokens)
+  while (tokens[readPosition]?.type === 'Plus' || tokens[readPosition]?.type === 'Minus') {
+    const {
+      expression: right,
+      parsedTokensCount: rightTokensCount,
+    } = parseMulDivExpression(tokens.slice(readPosition + 1))
     if (right === null) {
       return { expression: null }
     }
