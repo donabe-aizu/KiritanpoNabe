@@ -124,14 +124,31 @@ function parseFunctionCallingExpression(tokens) {
   }
 }
 
+// 単項演算子（+,-）の構文解析
+function parseUnaryOperatorExpression(tokens){
+  if(tokens[0]?.type === 'Plus' || tokens[0]?.type === 'Minus'){
+    let {
+      expression: value,
+      parsedTokensCount: readPosition
+     } = parseFunctionCallingExpression(tokens.slice(1))
+    if(tokens[0]?.type === 'Plus') value = {type: 'UnaryOperatorPlus', value}
+    else if (tokens[0]?.type === 'Minus') value = {type: 'UnaryOperatorMinus', value}
+    return {
+      expression: value,
+      parsedTokensCount: readPosition + 1
+    }
+  }
+  else return parseFunctionCallingExpression(tokens)
+}
+
 // 掛け算と割り算の構文解析
 function parseMulDivExpression(tokens){
-  let { expression: left, parsedTokensCount: readPosition } = parseFunctionCallingExpression(tokens)
+  let { expression: left, parsedTokensCount: readPosition } = parseUnaryOperatorExpression(tokens)
   while (tokens[readPosition]?.type === 'Multiply' || tokens[readPosition]?.type === 'Slash') {
     const {
       expression: right,
       parsedTokensCount: rightTokensCount,
-    } = parseFunctionCallingExpression(tokens.slice(readPosition + 1))
+    } = parseUnaryOperatorExpression(tokens.slice(readPosition + 1))
     if (right === null) {
       return { expression: null }
     }
